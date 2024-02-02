@@ -3,8 +3,10 @@ package org.perinity.resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.perinity.model.Pessoa;
 import org.perinity.model.DTO.PessoaDTO;
+import org.perinity.model.DTO.TarefaDTO;
 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -24,6 +26,8 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PessoaResource {
 
+	 private static final ModelMapper modelMapper = new ModelMapper();
+	
 	@POST
 	@Transactional
 	public Response adicionarPessoa(Pessoa pessoa) {
@@ -66,28 +70,33 @@ public class PessoaResource {
 		return Response.noContent().build();
 	}
 
-//    public PessoaResource(PessoaDTO pessoaDTO) {
-////    	
-//    }
-
-//    public List<PessoaResource> buscarPessoasPorNomeEPeriodo(String nome, LocalDateParam inicio, LocalDateParam fim){
-//        // Buscar pessoas por nome e período
-//        List<Pessoa> pessoas = Pessoa.list("nome = ?1 and data >= ?2 and data <= ?3", nome, inicio.getDate(), fim.getDate());
-//
-//        // Converter para DTOs
-//        List<PessoaDTO> pessoaDTOs = pessoas.stream().map(PessoaDTO::new).collect(Collectors.toList());
-//
-//        // Converter para Resources
-//        List<PessoaResource> pessoaResources = pessoaDTOs.stream().map(PessoaResource::new).collect(Collectors.toList());
-//
-//        return pessoaResources;
-//    }
-
 	@GET
-	@Transactional
 	public List<PessoaDTO> listarPessoas() {
 		List<Pessoa> pessoas = Pessoa.listAll();
 
 		return pessoas.stream().map(PessoaDTO::new).collect(Collectors.toList());
 	}
+
+
+	    @GET
+	    @Path("/gastos")
+	    public List<PessoaDTO> getPessoasGastos() {
+	        List<Pessoa> pessoas = Pessoa.listAll();
+	        
+	        if (pessoas.isEmpty()) {
+	            throw new WebApplicationException("Nenhuma pessoa encontrada.", 404);
+	        }
+
+	        return pessoas.stream().map(pessoa -> {
+	            PessoaDTO pessoaDTO = new PessoaDTO();
+	            pessoaDTO.nome = pessoa.nome;
+	            pessoaDTO.tarefas = pessoa.tarefas.stream().map(TarefaDTO::new).collect(Collectors.toList());
+	            pessoaDTO.totalHoras = pessoaDTO.calcularTotalHoras(pessoa.tarefas);
+	            pessoaDTO.mediaHoras = pessoaDTO.calcularMediaHoras(pessoa.tarefas);
+	            return pessoaDTO;
+	        }).collect(Collectors.toList());
+	    }
+
 }
+	
+

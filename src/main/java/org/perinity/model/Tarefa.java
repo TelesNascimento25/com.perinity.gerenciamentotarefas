@@ -1,17 +1,21 @@
 package org.perinity.model;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Tarefa extends PanacheEntityBase {
+public class Tarefa extends PanacheEntityBase implements Serializable {
+	private static final long serialVersionUID = -8574522383725735935L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
@@ -26,7 +30,7 @@ public class Tarefa extends PanacheEntityBase {
 	
 	public Duration duracao;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	public Pessoa pessoa;
 	
 	public Boolean finalizado;

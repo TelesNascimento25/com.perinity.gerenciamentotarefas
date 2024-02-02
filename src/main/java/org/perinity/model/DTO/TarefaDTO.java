@@ -1,29 +1,44 @@
 package org.perinity.model.DTO;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 
 import org.perinity.model.Pessoa;
 import org.perinity.model.Tarefa;
 
-public class TarefaDTO {
-	
-    public Long id;
-    
-    public String titulo;
-    
-    public String descricao;
-    
-    public LocalDate prazo;
-    
-    public String departamento;
-    
-    public Duration duracao;
-    
-    public Pessoa pessoa;
-    
-    public Boolean finalizado;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class TarefaDTO implements Serializable{
+	
+	private static final long serialVersionUID = 9031656048095518780L;
+
+	private Long id; // deixar **privado
+    
+	private String titulo;
+    
+	private String descricao;
+    
+	private LocalDate prazo;
+    
+	private String departamento;
+    
+	private Duration duracao;
+    
+	private PessoaDTO pessoa;
+    
+	private Boolean finalizado;
+	
+	public TarefaDTO() {
+	        // Initialization logic, if needed
+    }
+
+    // PODE REMOVER DEPOIS
     public TarefaDTO(Tarefa tarefa) {
         this.id = tarefa.id;
         this.titulo = tarefa.titulo;
@@ -31,7 +46,73 @@ public class TarefaDTO {
         this.prazo = tarefa.prazo;
         this.departamento = tarefa.departamento;
         this.duracao = tarefa.duracao;
-        this.pessoa = tarefa.pessoa;
+        this.pessoa = new PessoaDTO(tarefa.pessoa);
         this.finalizado = tarefa.finalizado;
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public LocalDate getPrazo() {
+		return prazo;
+	}
+
+	public void setPrazo(LocalDate prazo) {
+		this.prazo = prazo;
+	}
+
+	public String getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(String departamento) {
+		this.departamento = departamento;
+	}
+
+	public Duration getDuracao() {
+		return duracao;
+	}
+
+	public void setDuracao(Duration duracao) {
+		this.duracao = duracao;
+	}
+
+	public PessoaDTO getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(PessoaDTO pessoa) {
+		this.pessoa = pessoa;
+	}
+
+	public Boolean getFinalizado() {
+		return finalizado;
+	}
+
+	public void setFinalizado(Boolean finalizado) {
+		this.finalizado = finalizado;
+	}
+    
+    
 }

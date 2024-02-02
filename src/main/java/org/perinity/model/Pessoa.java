@@ -1,5 +1,6 @@
 package org.perinity.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -11,7 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Pessoa extends PanacheEntityBase {
+public class Pessoa extends PanacheEntityBase implements Serializable{
+	private static final long serialVersionUID = -7838128553759488625L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;

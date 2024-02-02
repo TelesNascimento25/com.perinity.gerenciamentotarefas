@@ -13,29 +13,33 @@ public class PessoaDTO {
     
     public String departamento;
     
-    public List<Tarefa> tarefas;
+    public List<TarefaDTO> tarefas;
     
     public Long totalHoras;
     
     public Double mediaHoras;
     
+    public PessoaDTO() {
+    	
+    }
+    
     public PessoaDTO(Pessoa pessoa) {
         this.id = pessoa.id;
         this.nome = pessoa.nome;
         this.departamento = pessoa.departamento;
-        this.tarefas = pessoa.tarefas;
+//        this.tarefas = pessoa.tarefas;
 
         this.totalHoras = calcularTotalHoras(pessoa.tarefas);
         this.mediaHoras = calcularMediaHoras(pessoa.tarefas);
     }
 
-    private Long calcularTotalHoras(List<Tarefa> tarefas) {
+    public Long calcularTotalHoras(List<Tarefa> tarefas) {
         return tarefas.stream()
                 .mapToLong(tarefa -> tarefa.duracao.toHours())
                 .sum();
     }
     
-    private Double calcularMediaHoras(List<Tarefa> tarefas) {
+    public Double calcularMediaHoras(List<Tarefa> tarefas) {
         return tarefas.stream()
                 .mapToLong(tarefa -> tarefa.duracao.toHours())
                 .average()
@@ -66,13 +70,13 @@ public class PessoaDTO {
 		this.departamento = departamento;
 	}
 
-	public List<Tarefa> getTarefas() {
-		return tarefas;
-	}
+//	public List<Tarefa> getTarefas() {
+//		return tarefas;
+//	}
 
-	public void setTarefas(List<Tarefa> tarefas) {
-		this.tarefas = tarefas;
-	}
+//	public void setTarefas(List<Tarefa> tarefas) {
+//		this.tarefas = tarefas;
+//	}
 
 	public Long getTotalHoras() {
 		return totalHoras;
