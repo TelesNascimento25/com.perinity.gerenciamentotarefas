@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 public class TarefaDTO implements Serializable{
 	
 	private static final long serialVersionUID = 9031656048095518780L;
@@ -39,16 +37,19 @@ public class TarefaDTO implements Serializable{
     }
 
     // PODE REMOVER DEPOIS
-    public TarefaDTO(Tarefa tarefa) {
-        this.id = tarefa.id;
-        this.titulo = tarefa.titulo;
-        this.descricao = tarefa.descricao;
-        this.prazo = tarefa.prazo;
-        this.departamento = tarefa.departamento;
-        this.duracao = tarefa.duracao;
-        this.pessoa = new PessoaDTO(tarefa.pessoa);
-        this.finalizado = tarefa.finalizado;
-    }
+	public TarefaDTO(Tarefa tarefa) {
+	    this.id = tarefa.id;
+	    this.titulo = tarefa.titulo;
+	    this.descricao = tarefa.descricao;
+	    this.prazo = tarefa.prazo;
+	    this.departamento = tarefa.departamento;
+	    this.duracao = tarefa.duracao;
+	    this.finalizado = tarefa.finalizado;
+	    if (tarefa.pessoa != null) {
+	        this.pessoa = new PessoaDTO(tarefa.pessoa);
+	    }
+	}
+
 
 	public Long getId() {
 		return id;

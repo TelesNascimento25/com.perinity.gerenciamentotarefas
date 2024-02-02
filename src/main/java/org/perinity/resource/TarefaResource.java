@@ -1,6 +1,7 @@
 package org.perinity.resource;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,7 +11,6 @@ import org.perinity.model.DTO.TarefaDTO;
 
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -85,12 +85,31 @@ public class TarefaResource {
 	    return Response.ok(tarefaDTO).build();
 	}
 	
-
 	@GET
 	@Path("/pendentes")
-	public List<TarefaDTO> listarTarefasPendentes() {
-		List<Tarefa> tarefas = Tarefa.list("pessoa is null order by prazo asc", Page.ofSize(3));
+	public List<TarefaDTO> getTarefasPendentes() {
+	    List<Tarefa> tarefas = Tarefa.find("pessoa is null order by prazo").page(Page.ofSize(3)).list();
+	    
+	    if (tarefas.isEmpty()) {
+	        throw new WebApplicationException("Nenhuma tarefa pendente encontrada.", 404);
+	    }
 
-		return tarefas.stream().map(TarefaDTO::new).collect(Collectors.toList());
+	    return tarefas.stream().map(tarefa -> {
+	        if (tarefa.pessoa == null) {
+	            return new TarefaDTO(tarefa);
+	        } else {
+	            return null;
+	        }
+	    }).filter(Objects::nonNull).collect(Collectors.toList());
 	}
-}
+
+
+	
+	
+	
+	}
+	
+
+
+
+
