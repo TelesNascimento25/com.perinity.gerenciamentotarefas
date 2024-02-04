@@ -7,12 +7,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DepartamentoDTO {
+public class PessoaListarDTO {
 	public Long id;
-	public String titulo;
-	public Long quantidadePessoas;
-	public Long quantidadeTarefas;
+	public String nome;
+	public String tituloDepartamento;
+	public Long totalHoras;
 
-	public DepartamentoDTO() {
+	public PessoaListarDTO() {
 	}
 }
