@@ -26,7 +26,8 @@ public class Tarefa extends PanacheEntityBase implements Serializable {
 	
 	public LocalDate prazo;
 	
-	public String departamento;
+	@ManyToOne(fetch = FetchType.EAGER)
+	public Departamento departamento;
 	
 	public Duration duracao;
 	
@@ -35,7 +36,7 @@ public class Tarefa extends PanacheEntityBase implements Serializable {
 	
 	public Boolean finalizado;
 	
-	public Tarefa(Long id, String titulo, String descricao, LocalDate prazo, String departamento, Duration duracao,
+	public Tarefa(Long id, String titulo, String descricao, LocalDate prazo, Departamento departamento, Duration duracao,
 			Pessoa pessoa, Boolean finalizado) {
 		this.id = id;
 		this.titulo = titulo;
@@ -82,11 +83,12 @@ public class Tarefa extends PanacheEntityBase implements Serializable {
 		this.prazo = prazo;
 	}
 
-	public String getDepartamento() {
+
+	public Departamento getDepartamento() {
 		return departamento;
 	}
 
-	public void setDepartamento(String departamento) {
+	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
 

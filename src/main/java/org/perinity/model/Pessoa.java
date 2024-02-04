@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -21,19 +22,22 @@ public class Pessoa extends PanacheEntityBase implements Serializable{
 	
 	public String nome;
 	
-	public String departamento;
+	@ManyToOne(fetch = FetchType.EAGER)
+	public Departamento departamento;
 	
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.EAGER)
 	public List<Tarefa> tarefas;
 
-	public Pessoa(Long id, String nome, String departamento, List<Tarefa> tarefas) {
+	public Pessoa(Long id, String nome, Departamento departamento, List<Tarefa> tarefas) {
 		this.id = id;
 		this.nome = nome;
 		this.departamento = departamento;
 		this.tarefas = tarefas;
 	}
 	
-	
+	public Departamento getDepartamento() {
+		return departamento;
+	}
 	
 	public Long getId() {
 		return id;
@@ -51,15 +55,7 @@ public class Pessoa extends PanacheEntityBase implements Serializable{
 		this.nome = nome;
 	}
 
-	public String getDepartamento() {
-		return departamento;
-	}
-
 	public Pessoa() {
-	}
-
-	public void setDepartamento(String departamento) {
-		this.departamento = departamento;
 	}
 
 	public List<Tarefa> getTarefas() {

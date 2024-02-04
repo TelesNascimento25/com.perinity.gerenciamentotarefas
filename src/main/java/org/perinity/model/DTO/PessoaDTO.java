@@ -7,11 +7,11 @@ import org.perinity.model.Tarefa;
 
 public class PessoaDTO {
 	
-    public Long id;
+public Long id;
     
     public String nome;
     
-    public String departamento;
+    public Long departamentoId;
     
     public List<TarefaDTO> tarefas;
     
@@ -26,8 +26,7 @@ public class PessoaDTO {
     public PessoaDTO(Pessoa pessoa) {
         this.id = pessoa.id;
         this.nome = pessoa.nome;
-        this.departamento = pessoa.departamento;
-//        this.tarefas = pessoa.tarefas;
+        this.departamentoId = pessoa.departamento.id;
 
         this.totalHoras = calcularTotalHoras(pessoa.tarefas);
         this.mediaHoras = calcularMediaHoras(pessoa.tarefas);
@@ -62,21 +61,13 @@ public class PessoaDTO {
 		this.nome = nome;
 	}
 
-	public String getDepartamento() {
-		return departamento;
+	public Long getDepartamentoId() {
+		return departamentoId;
 	}
 
-	public void setDepartamento(String departamento) {
-		this.departamento = departamento;
+	public void setDepartamentoId(Long departamentoId) {
+		this.departamentoId = departamentoId;
 	}
-
-//	public List<Tarefa> getTarefas() {
-//		return tarefas;
-//	}
-
-//	public void setTarefas(List<Tarefa> tarefas) {
-//		this.tarefas = tarefas;
-//	}
 
 	public Long getTotalHoras() {
 		return totalHoras;

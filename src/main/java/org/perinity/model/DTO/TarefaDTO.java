@@ -4,19 +4,14 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 
-import org.perinity.model.Pessoa;
 import org.perinity.model.Tarefa;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 public class TarefaDTO implements Serializable{
 	
 	private static final long serialVersionUID = 9031656048095518780L;
 
-	private Long id; // deixar **privado
+	private Long id;
     
 	private String titulo;
     
@@ -24,7 +19,7 @@ public class TarefaDTO implements Serializable{
     
 	private LocalDate prazo;
     
-	private String departamento;
+	private Long departamentoId;
     
 	private Duration duracao;
     
@@ -36,13 +31,12 @@ public class TarefaDTO implements Serializable{
 	        // Initialization logic, if needed
     }
 
-    // PODE REMOVER DEPOIS
 	public TarefaDTO(Tarefa tarefa) {
 	    this.id = tarefa.id;
 	    this.titulo = tarefa.titulo;
 	    this.descricao = tarefa.descricao;
 	    this.prazo = tarefa.prazo;
-	    this.departamento = tarefa.departamento;
+	    this.departamentoId = tarefa.departamento.id;
 	    this.duracao = tarefa.duracao;
 	    this.finalizado = tarefa.finalizado;
 	    if (tarefa.pessoa != null) {
@@ -83,12 +77,12 @@ public class TarefaDTO implements Serializable{
 		this.prazo = prazo;
 	}
 
-	public String getDepartamento() {
-		return departamento;
+	public Long getDepartamentoId() {
+		return departamentoId;
 	}
 
-	public void setDepartamento(String departamento) {
-		this.departamento = departamento;
+	public void setDepartamentoId(Long departamentoId) {
+		this.departamentoId = departamentoId;
 	}
 
 	public Duration getDuracao() {

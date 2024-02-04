@@ -1,12 +1,13 @@
 package org.perinity.resource;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.perinity.model.Pessoa;
 import org.perinity.model.DTO.PessoaDTO;
-import org.perinity.model.DTO.TarefaDTO;
+import org.perinity.model.DTO.PessoaGastoDTO;
 
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -26,8 +27,6 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PessoaResource {
 
-	 private static final ModelMapper modelMapper = new ModelMapper();
-	
 	@POST
 	@Transactional
 	public Response adicionarPessoa(Pessoa pessoa) {
@@ -77,26 +76,24 @@ public class PessoaResource {
 		return pessoas.stream().map(PessoaDTO::new).collect(Collectors.toList());
 	}
 
+	@GET
+	@Path("/gastos")
+	public List<PessoaGastoDTO> getPessoasGastos() {
+		List<Pessoa> pessoas = Pessoa.listAll();
 
-	    @GET
-	    @Path("/gastos")
-	    public List<PessoaDTO> getPessoasGastos() {
-	        List<Pessoa> pessoas = Pessoa.listAll();
-	        
-	        if (pessoas.isEmpty()) {
-	            throw new WebApplicationException("Nenhuma pessoa encontrada.", 404);
-	        }
+		if (pessoas.isEmpty()) {
+			throw new WebApplicationException("Nenhuma pessoa encontrada.", 404);
+		}
 
-	        return pessoas.stream().map(pessoa -> {
-	            PessoaDTO pessoaDTO = new PessoaDTO();
-	            pessoaDTO.nome = pessoa.nome;
-	            pessoaDTO.tarefas = pessoa.tarefas.stream().map(TarefaDTO::new).collect(Collectors.toList());
-	            pessoaDTO.totalHoras = pessoaDTO.calcularTotalHoras(pessoa.tarefas);
-	            pessoaDTO.mediaHoras = pessoaDTO.calcularMediaHoras(pessoa.tarefas);
-	            return pessoaDTO;
-	        }).collect(Collectors.toList());
-	    }
+		return pessoas.stream().map(pessoa -> {
+			LocalDate periodoInicio = pessoa.tarefas.stream().min(Comparator.comparing(tarefa -> tarefa.prazo))
+					.map(tarefa -> tarefa.prazo).orElse(null);
+			LocalDate periodoFim = pessoa.tarefas.stream().max(Comparator.comparing(tarefa -> tarefa.prazo))
+					.map(tarefa -> tarefa.prazo).orElse(null);
+			Double mediaHoras = pessoa.tarefas.stream().mapToDouble(tarefa -> tarefa.duracao.toHours()).average()
+					.orElse(0);
+			return new PessoaGastoDTO(pessoa.nome, periodoInicio, periodoFim, mediaHoras);
+		}).collect(Collectors.toList());
+	}
 
 }
-	
-

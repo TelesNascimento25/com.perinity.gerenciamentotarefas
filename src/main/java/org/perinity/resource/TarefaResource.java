@@ -29,8 +29,8 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class TarefaResource {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
-	
+	private static final ModelMapper modelMapper = new ModelMapper();
+
 	@POST
 	@Transactional
 	public Response adicionarTarefa(Tarefa tarefa) {
@@ -47,26 +47,27 @@ public class TarefaResource {
 	@Path("/alocar/{id}")
 	@Transactional
 	public Response alocarPessoaNaTarefa(@PathParam("id") Long id, Pessoa pessoa) {
-	    Tarefa tarefa = Tarefa.findById(id);
-	    if (tarefa == null) {
-	        throw new WebApplicationException("Tarefa com o id: " + id + " não existe.", 404);
-	    }
+		Tarefa tarefa = Tarefa.findById(id);
+		if (tarefa == null) {
+			throw new WebApplicationException("Tarefa com o id: " + id + " não existe.", 404);
+		}
 
-	    Pessoa pessoaExistente = Pessoa.findById(pessoa.id);
-	    if (pessoaExistente == null) {
-	        throw new WebApplicationException("Pessoa com o id: " + pessoa.id + " não existe.", 404);
-	    }
+		Pessoa pessoaExistente = Pessoa.findById(pessoa.id);
+		if (pessoaExistente == null) {
+			throw new WebApplicationException("Pessoa com o id: " + pessoa.id + " não existe.", 404);
+		}
 
-	    if (!pessoaExistente.departamento.equals(tarefa.departamento)) {
-	        throw new WebApplicationException("Pessoa and Tarefa não pertencem ao mesmo departamento", 400);
-	    }
+		if (!pessoaExistente.departamento.equals(tarefa.departamento)) {
+			throw new WebApplicationException("Pessoa and Tarefa não pertencem ao mesmo departamento", 400);
+		}
 
-	    tarefa.pessoa = pessoaExistente;
-	    tarefa.persist();
+		tarefa.pessoa = pessoaExistente;
+		tarefa.persist();
 
-	    return Response.ok(tarefa).build();
+		TarefaDTO tarefaDTO = modelMapper.map(tarefa, TarefaDTO.class);
+
+		return Response.ok(tarefaDTO).build();
 	}
-
 
 	@PUT
 	@Path("/finalizar/{id}")
@@ -79,37 +80,28 @@ public class TarefaResource {
 
 		tarefa.finalizado = true;
 		tarefa.persist();
-		
+
 		TarefaDTO tarefaDTO = modelMapper.map(tarefa, TarefaDTO.class);
 
-	    return Response.ok(tarefaDTO).build();
+		return Response.ok(tarefaDTO).build();
 	}
-	
+
 	@GET
 	@Path("/pendentes")
 	public List<TarefaDTO> getTarefasPendentes() {
-	    List<Tarefa> tarefas = Tarefa.find("pessoa is null order by prazo").page(Page.ofSize(3)).list();
-	    
-	    if (tarefas.isEmpty()) {
-	        throw new WebApplicationException("Nenhuma tarefa pendente encontrada.", 404);
-	    }
+		List<Tarefa> tarefas = Tarefa.find("pessoa is null order by prazo").page(Page.ofSize(3)).list();
 
-	    return tarefas.stream().map(tarefa -> {
-	        if (tarefa.pessoa == null) {
-	            return new TarefaDTO(tarefa);
-	        } else {
-	            return null;
-	        }
-	    }).filter(Objects::nonNull).collect(Collectors.toList());
+		if (tarefas.isEmpty()) {
+			throw new WebApplicationException("Nenhuma tarefa pendente encontrada.", 404);
+		}
+
+		return tarefas.stream().map(tarefa -> {
+			if (tarefa.pessoa == null) {
+				return new TarefaDTO(tarefa);
+			} else {
+				return null;
+			}
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-
-	
-	
-	
-	}
-	
-
-
-
-
+}

@@ -2,24 +2,39 @@ package org.perinity.model.DTO;
 
 public class DepartamentoDTO {
 	
-    public String departamento;
+    public Long id;
+    
+    public String titulo;
     
     public Long quantidadePessoas;
     
     public Long quantidadeTarefas;
+    
+    public DepartamentoDTO() {
+    	
+    }
 
-    public DepartamentoDTO(String departamento, Long quantidadePessoas, Long quantidadeTarefas) {
-        this.departamento = departamento;
+    public DepartamentoDTO(Long id, String titulo, Long quantidadePessoas, Long quantidadeTarefas) {
+        this.id = id;
+        this.titulo = titulo;
         this.quantidadePessoas = quantidadePessoas;
         this.quantidadeTarefas = quantidadeTarefas;
     }
 
-	public String getDepartamento() {
-		return departamento;
+	public Long getId() {
+		return id;
 	}
 
-	public void setDepartamento(String departamento) {
-		this.departamento = departamento;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public Long getQuantidadePessoas() {
