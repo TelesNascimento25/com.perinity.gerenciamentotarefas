@@ -12,7 +12,6 @@ public class DepartamentoDTO {
 	public String titulo;
 	public Long quantidadePessoas;
 	public Long quantidadeTarefas;
-
 	public DepartamentoDTO() {
 	}
 }

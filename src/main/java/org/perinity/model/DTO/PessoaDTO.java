@@ -16,10 +16,8 @@ public class PessoaDTO {
 	public List<TarefaDTO> tarefas;
 	public Long totalHoras;
 	public Double mediaHoras;
-
 	public PessoaDTO() {
 	}
-
 	public PessoaDTO(Long id, String nome, Long departamentoId, Long totalHoras, Double mediaHoras) {
 		this.id = id;
 		this.nome = nome;

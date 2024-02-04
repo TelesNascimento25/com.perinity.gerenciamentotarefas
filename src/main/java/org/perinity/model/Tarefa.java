@@ -33,8 +33,6 @@ public class Tarefa extends PanacheEntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	public Pessoa pessoa;
 	public Boolean finalizado;
-
 	public Tarefa() {
-
 	}
 }

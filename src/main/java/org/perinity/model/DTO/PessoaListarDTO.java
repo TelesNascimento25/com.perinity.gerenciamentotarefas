@@ -12,7 +12,6 @@ public class PessoaListarDTO {
 	public String nome;
 	public String tituloDepartamento;
 	public Long totalHoras;
-
 	public PessoaListarDTO() {
 	}
 }

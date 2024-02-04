@@ -2,11 +2,17 @@ package org.perinity.model.DTO;
 
 import org.perinity.model.Pessoa;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
 public class PessoaRespostaDTO {
 	public Long id;
 	public String nome;
 	public String tituloDepartamento;
-
 	public PessoaRespostaDTO(Pessoa pessoa) {
 		this.id = pessoa.id;
 		this.nome = pessoa.nome;

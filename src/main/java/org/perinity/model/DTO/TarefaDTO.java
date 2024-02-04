@@ -23,10 +23,8 @@ public class TarefaDTO implements Serializable {
 	private Long duracao;
 	private PessoaDTO pessoa;
 	private Boolean finalizado;
-
 	public TarefaDTO() {
 	}
-
 	public TarefaDTO(Tarefa tarefa) {
 		this.id = tarefa.id;
 		this.titulo = tarefa.titulo;

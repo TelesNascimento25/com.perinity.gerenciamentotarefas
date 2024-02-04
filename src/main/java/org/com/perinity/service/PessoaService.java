@@ -63,13 +63,19 @@ public class PessoaService {
 
 	@Transactional
 	public String removerPessoa(Long id) {
-		Pessoa pessoa = Pessoa.findById(id);
-		if (pessoa == null) {
-			throw new WebApplicationException("Pessoa com o id: " + id + " não existe.", 404);
-		}
-		pessoa.delete();
-		return "Pessoa deletada com sucesso!";
+	    Pessoa pessoa = Pessoa.findById(id);
+	    if (pessoa == null) {
+	        throw new WebApplicationException("Pessoa com o id: " + id + " não existe.", 404);
+	    }
+
+	    if (!pessoa.getTarefas().isEmpty()) {
+	        throw new WebApplicationException("Não é possível excluir uma pessoa que está alocada em tarefas.", 400);
+	    }
+
+	    pessoa.delete();
+	    return "Pessoa deletada com sucesso!";
 	}
+
 
 	public List<PessoaListarDTO> listarPessoas() {
 		List<Pessoa> pessoas = Pessoa.listAll();

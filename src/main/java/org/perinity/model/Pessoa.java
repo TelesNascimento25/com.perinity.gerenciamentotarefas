@@ -21,7 +21,6 @@ import lombok.Setter;
 @Setter
 public class Pessoa extends PanacheEntityBase implements Serializable {
 	private static final long serialVersionUID = -7838128553759488625L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
@@ -30,7 +29,6 @@ public class Pessoa extends PanacheEntityBase implements Serializable {
 	public Departamento departamento;
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.EAGER)
 	public List<Tarefa> tarefas;
-
 	public Pessoa() {
 	}
 }
