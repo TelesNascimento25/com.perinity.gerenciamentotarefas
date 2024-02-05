@@ -23,16 +23,16 @@ public class Tarefa extends PanacheEntityBase implements Serializable {
 	private static final long serialVersionUID = -8574522383725735935L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
-	public String titulo;
-	public String descricao;
-	public LocalDate prazo;
+	private Long id;
+	private String titulo;
+	private String descricao;
+	private LocalDate prazo;
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Departamento departamento;
-	public Long duracao;
+	private Departamento departamento;
+	private Long duracao;
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Pessoa pessoa;
-	public Boolean finalizado;
+	private Pessoa pessoa;
+	private Boolean finalizado;
 	public Tarefa() {
 	}
 }

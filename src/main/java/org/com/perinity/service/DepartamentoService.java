@@ -18,7 +18,7 @@ public class DepartamentoService {
 	        if (departamento == null) {
 	            throw new WebApplicationException("Departamento não pode ser nulo.", 400);
 	        }
-	        if (departamento.id != null) {
+	        if (departamento.getId() != null) {
 	            throw new WebApplicationException("Id foi definido de forma inválida na solicitação.", 422);
 	        }
 
@@ -37,7 +37,7 @@ public class DepartamentoService {
 	            throw new WebApplicationException("Departamento com o id: " + id + " não existe.", 404);
 	        }
 
-	        departamentoExistente.titulo = departamento.titulo;
+	        departamentoExistente.setTitulo(departamento.getTitulo());
 	        departamentoExistente.persist();
 
 	        return departamentoExistente;
@@ -53,7 +53,7 @@ public class DepartamentoService {
                 .flatMap(pessoa -> pessoa.getTarefas().stream())
                 .count();
             departamentoDTOs.add(
-                    new DepartamentoDTO(departamento.id, departamento.titulo, quantidadePessoas, quantidadeTarefas));
+                    new DepartamentoDTO(departamento.getId(), departamento.getTitulo(), quantidadePessoas, quantidadeTarefas));
         }
 
         return departamentoDTOs;

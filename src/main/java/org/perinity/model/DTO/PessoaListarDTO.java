@@ -8,10 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PessoaListarDTO {
-	public Long id;
-	public String nome;
-	public String tituloDepartamento;
-	public Long totalHoras;
+	private Long id;
+	private String nome;
+	private String tituloDepartamento;
+	private Long totalHoras;
 	public PessoaListarDTO() {
 	}
 }

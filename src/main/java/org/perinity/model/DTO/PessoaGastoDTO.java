@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PessoaGastoDTO {
-	public String nome;
-	public LocalDate periodoInicio;
-	public LocalDate periodoFim;
-	public Double mediaHoras;
+	private String nome;
+	private LocalDate periodoInicio;
+	private LocalDate periodoFim;
+	private Double mediaHoras;
 }

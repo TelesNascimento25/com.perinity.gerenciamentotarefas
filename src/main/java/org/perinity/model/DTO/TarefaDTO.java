@@ -26,15 +26,15 @@ public class TarefaDTO implements Serializable {
 	public TarefaDTO() {
 	}
 	public TarefaDTO(Tarefa tarefa) {
-		this.id = tarefa.id;
-		this.titulo = tarefa.titulo;
-		this.descricao = tarefa.descricao;
-		this.prazo = tarefa.prazo;
-		this.departamentoId = tarefa.departamento.id;
-		this.duracao = tarefa.duracao;
-		this.finalizado = tarefa.finalizado;
-		if (tarefa.pessoa != null) {
-			this.pessoa = new PessoaDTO(tarefa.pessoa.id, tarefa.pessoa.nome, tarefa.pessoa.departamento.id, null,
+		this.id = tarefa.getId();
+		this.titulo = tarefa.getTitulo();
+		this.descricao = tarefa.getDescricao();
+		this.prazo = tarefa.getPrazo();
+		this.departamentoId = tarefa.getDepartamento().getId();
+		this.duracao = tarefa.getDuracao();
+		this.finalizado = tarefa.getFinalizado();
+		if (tarefa.getPessoa() != null) {
+			this.pessoa = new PessoaDTO(tarefa.getPessoa().getId(), tarefa.getPessoa().getNome(), tarefa.getPessoa().getDepartamento().getId(), null,
 					null);
 		}
 	}

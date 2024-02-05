@@ -22,10 +22,10 @@ public class Departamento extends PanacheEntityBase implements Serializable {
 	private static final long serialVersionUID = 5132583959301321727L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
-	public String titulo;
+	private Long id;
+	private String titulo;
 	@OneToMany(mappedBy = "departamento", fetch = FetchType.EAGER)
-	public List<Pessoa> pessoas;
+	private List<Pessoa> pessoas;
 	public Departamento() {
 	}
 }

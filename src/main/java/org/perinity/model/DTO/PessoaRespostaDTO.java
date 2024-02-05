@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PessoaRespostaDTO {
-	public Long id;
-	public String nome;
-	public String tituloDepartamento;
+	private Long id;
+	private String nome;
+	private String tituloDepartamento;
 	public PessoaRespostaDTO(Pessoa pessoa) {
-		this.id = pessoa.id;
-		this.nome = pessoa.nome;
-		this.tituloDepartamento = pessoa.departamento.titulo;
+		this.id = pessoa.getId();
+		this.nome = pessoa.getNome();
+		this.tituloDepartamento = pessoa.getDepartamento().getTitulo();
 	}
 }

@@ -22,23 +22,23 @@ public class TarefaService {
 		if (tarefa == null) {
 			throw new BadRequestException("Tarefa não pode ser nula.");
 		}
-		if (tarefa.id != null) {
+		if (tarefa.getId() != null) {
 			throw new BadRequestException("Id foi definido de forma inválida na solicitação.");
 		}
 
-		if (tarefa.departamento == null) {
+		if (tarefa.getDepartamento() == null) {
 			throw new BadRequestException("Departamento não pode ser nulo.");
 		}
 
-		if (tarefa.pessoa != null && tarefa.pessoa.id != null) {
-			Pessoa pessoa = Pessoa.findById(tarefa.pessoa.id);
+		if (tarefa.getPessoa() != null && tarefa.getPessoa().getId() != null) {
+			Pessoa pessoa = Pessoa.findById(tarefa.getPessoa().getId());
 			if (pessoa == null) {
-				throw new WebApplicationException("Pessoa com o id: " + tarefa.pessoa.id + " não existe.", 404);
+				throw new WebApplicationException("Pessoa com o id: " + tarefa.getPessoa().getId() + " não existe.", 404);
 			}
-			if (!pessoa.departamento.id.equals(tarefa.departamento.id)) {
+			if (!pessoa.getDepartamento().getId().equals(tarefa.getDepartamento().getId())) {
 				throw new WebApplicationException("Pessoa e Tarefa não pertencem ao mesmo departamento", 400);
 			}
-			tarefa.pessoa = pessoa;
+			tarefa.setPessoa(pessoa);
 		}
 
 		tarefa.persist();
@@ -56,16 +56,16 @@ public class TarefaService {
 			throw new WebApplicationException("Tarefa com o id: " + id + " não existe.", 404);
 		}
 
-		Pessoa pessoaExistente = Pessoa.findById(pessoa.id);
+		Pessoa pessoaExistente = Pessoa.findById(pessoa.getId());
 		if (pessoaExistente == null) {
-			throw new WebApplicationException("Pessoa com o id: " + pessoa.id + " não existe.", 404);
+			throw new WebApplicationException("Pessoa com o id: " + pessoa.getId() + " não existe.", 404);
 		}
 
-		if (!pessoaExistente.departamento.equals(tarefa.departamento)) {
+		if (!pessoaExistente.getDepartamento().equals(tarefa.getDepartamento())) {
 			throw new WebApplicationException("Pessoa e Tarefa não pertencem ao mesmo departamento", 400);
 		}
 
-		tarefa.pessoa = pessoaExistente;
+		tarefa.setPessoa(pessoaExistente);
 		tarefa.persist();
 
 		TarefaDTO tarefaDTO = new TarefaDTO(tarefa);
@@ -79,7 +79,7 @@ public class TarefaService {
 			throw new WebApplicationException("Tarefa com id de " + id + " não existe.", 404);
 		}
 
-		tarefa.finalizado = true;
+		tarefa.setFinalizado(true);
 		tarefa.persist();
 
 		return tarefa;
@@ -93,7 +93,7 @@ public class TarefaService {
 		}
 
 		return tarefas.stream().map(tarefa -> {
-			if (tarefa.pessoa == null) {
+			if (tarefa.getPessoa() == null) {
 				return new TarefaDTO(tarefa);
 			} else {
 				return null;

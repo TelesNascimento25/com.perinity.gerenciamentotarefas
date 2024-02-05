@@ -10,12 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PessoaDTO {
-	public Long id;
-	public String nome;
-	public Long departamentoId;
-	public List<TarefaDTO> tarefas;
-	public Long totalHoras;
-	public Double mediaHoras;
+	private Long id;
+	private String nome;
+	private Long departamentoId;
+	private List<TarefaDTO> tarefas;
+	private Long totalHoras;
+	private Double mediaHoras;
 	public PessoaDTO() {
 	}
 	public PessoaDTO(Long id, String nome, Long departamentoId, Long totalHoras, Double mediaHoras) {

@@ -23,12 +23,12 @@ public class Pessoa extends PanacheEntityBase implements Serializable {
 	private static final long serialVersionUID = -7838128553759488625L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
-	public String nome;
+	private Long id;
+	private String nome;
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Departamento departamento;
+	private Departamento departamento;
 	@OneToMany(mappedBy = "pessoa", fetch = FetchType.EAGER)
-	public List<Tarefa> tarefas;
+	private List<Tarefa> tarefas;
 	public Pessoa() {
 	}
 }

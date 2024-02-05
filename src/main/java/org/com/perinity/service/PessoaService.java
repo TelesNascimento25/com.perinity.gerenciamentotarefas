@@ -24,16 +24,16 @@ public class PessoaService {
 		if (pessoa == null) {
 			throw new BadRequestException("Pessoa não pode ser nula.");
 		}
-		if (pessoa.id != null) {
+		if (pessoa.getId() != null) {
 			throw new BadRequestException("Id foi definido de forma inválida na solicitação.");
 		}
 
-		Departamento departamento = Departamento.findById(pessoa.departamento.id);
+		Departamento departamento = Departamento.findById(pessoa.getDepartamento().getId());
 		if (departamento == null) {
-			throw new WebApplicationException("Departamento com o id: " + pessoa.departamento.id + " não existe.", 404);
+			throw new WebApplicationException("Departamento com o id: " + pessoa.getDepartamento().getId() + " não existe.", 404);
 		}
 
-		pessoa.departamento = departamento;
+		pessoa.setDepartamento(departamento);
 		pessoa.persist();
 
 		return pessoa;
@@ -49,13 +49,13 @@ public class PessoaService {
 			throw new WebApplicationException("Pessoa com o id: " + id + " não existe.", 404);
 		}
 
-		Departamento departamento = Departamento.findById(pessoa.departamento.id);
+		Departamento departamento = Departamento.findById(pessoa.getDepartamento().getId());
 		if (departamento == null) {
-			throw new WebApplicationException("Departamento com o id: " + pessoa.departamento.id + " não existe.", 404);
+			throw new WebApplicationException("Departamento com o id: " + pessoa.getDepartamento().getId() + " não existe.", 404);
 		}
-		pessoaExistente.departamento = departamento;
+		pessoaExistente.setDepartamento(departamento);
 
-		pessoaExistente.nome = pessoa.nome;
+		pessoaExistente.setNome(pessoa.getNome());
 		pessoaExistente.persist();
 
 		return new PessoaRespostaDTO(pessoaExistente);
@@ -81,30 +81,30 @@ public class PessoaService {
 		List<Pessoa> pessoas = Pessoa.listAll();
 
 		return pessoas.stream().map(pessoa -> {
-			Long totalHoras = calcularTotalHoras(pessoa.tarefas);
-			Departamento departamento = Departamento.findById(pessoa.departamento.id);
-			return new PessoaListarDTO(pessoa.id, pessoa.nome, departamento.titulo, totalHoras);
+			Long totalHoras = calcularTotalHoras(pessoa.getTarefas());
+			Departamento departamento = Departamento.findById(pessoa.getDepartamento().getId());
+			return new PessoaListarDTO(pessoa.getId(), pessoa.getNome(), departamento.getTitulo(), totalHoras);
 		}).collect(Collectors.toList());
 	}
 
 	public Long calcularTotalHoras(List<Tarefa> tarefas) {
-		return tarefas.stream().mapToLong(tarefa -> tarefa.duracao).sum() / 60;
+		return tarefas.stream().mapToLong(tarefa -> tarefa.getDuracao()).sum() / 60;
 	}
 
 	public Double calcularMediaHoras(List<Tarefa> tarefas) {
-		return tarefas.stream().mapToLong(tarefa -> tarefa.duracao).average().orElse(0);
+		return tarefas.stream().mapToLong(tarefa -> tarefa.getDuracao()).average().orElse(0);
 	}
 
 	public List<PessoaGastoDTO> buscarGastosPorNomeEPrazo(String nome, LocalDate prazoInicio, LocalDate prazoFim) {
 		List<Pessoa> pessoas = Pessoa.list("nome", nome);
 
 		List<Pessoa> pessoasNoPrazo = pessoas.stream()
-				.filter(pessoa -> pessoa.tarefas.stream().anyMatch(
-						tarefa -> !tarefa.prazo.isBefore(prazoInicio) && !tarefa.prazo.isAfter(prazoFim.plusDays(1))))
+				.filter(pessoa -> pessoa.getTarefas().stream().anyMatch(
+						tarefa -> !tarefa.getPrazo().isBefore(prazoInicio) && !tarefa.getPrazo().isAfter(prazoFim.plusDays(1))))
 				.collect(Collectors.toList());
 
-		List<PessoaGastoDTO> pessoasGasto = pessoasNoPrazo.stream().map(pessoa -> new PessoaGastoDTO(pessoa.nome,
-				prazoInicio, prazoFim, calcularMediaHoras(pessoa.tarefas) / 60.0)).collect(Collectors.toList());
+		List<PessoaGastoDTO> pessoasGasto = pessoasNoPrazo.stream().map(pessoa -> new PessoaGastoDTO(pessoa.getNome(),
+				prazoInicio, prazoFim, calcularMediaHoras(pessoa.getTarefas()) / 60.0)).collect(Collectors.toList());
 
 		return pessoasGasto;
 	}
