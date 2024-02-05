@@ -3,6 +3,9 @@
 Esse projeto usa o Quarkus, the Supersonic Subatomic Java Framework.
 
 Para rodar a aplicação você deve:
+
+Run as: Maven Build
+
 ```maven build
 goals: quarkus:dev
 ```
